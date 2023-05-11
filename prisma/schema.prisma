@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Node {
+  id           String  @id
+  outgoingEdges Edge[]  @relation("outgoingEdges")
+  incomingEdges Edge[]  @relation("incomingEdges")
+}
+
+model Edge {
+  id        Int     @id @default(autoincrement())
+  weight    Float
+  source    Node    @relation("outgoingEdges", fields: [sourceId], references: [id])
+  sourceId  String
+  target    Node    @relation("incomingEdges", fields: [targetId], references: [id])
+  targetId  String
+}
