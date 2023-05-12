@@ -24,6 +24,6 @@
       "@api/*": ["./src/pages/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/form.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/form.js", "src/components/chessboard.js", "src/components/resultDisplay.js"],
   "exclude": ["node_modules"]
 }

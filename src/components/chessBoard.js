@@ -1,5 +1,5 @@
 import React from "react";
-import "./Chessboard.css";
+import "./chessboard.css";
 
 function Chessboard() {
   const rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
