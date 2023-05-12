@@ -22,43 +22,56 @@ function calculateFastestPath(
   pickup: Position,
   destination: Position,
 ): Path {
-  const queue: { position: Position; time: number; path: Position[] }[] = [    { position: origin, time: 0, path: [] },
+  // Calculate the fastest path from origin to pickup
+  const queue1: { position: Position; time: number; path: Position[] }[] = [
+    { position: origin, time: 0, path: [] },
   ];
-  const visited: Record<Position, boolean> = {};
+  const visited1: Record<Position, boolean> = {};
 
-  while (queue.length > 0) {
-    queue.sort((a, b) => a.time - b.time);
-    const { position, time, path } = queue.shift()!;
+  while (queue1.length > 0) {
+    queue1.sort((a, b) => a.time - b.time);
+    const { position, time, path } = queue1.shift()!;
 
     if (position === pickup) {
-        const newPath = [...path, pickup];
-        const newQueue = Object.keys(timeMatrix[pickup]).map((nextPos) => ({
-          position: nextPos,
-          time: time + timeMatrix[pickup][nextPos],
-          path: newPath,
-        }));
-        queue.push(...newQueue);
-    } else if (position === destination) {
-      return { positions: [...path, destination], time };
-    } else if (!visited[position]) {
-      visited[position] = true;
+      // Calculate the fastest path from pickup to destination
+      const queue2: { position: Position; time: number; path: Position[] }[] = [
+        { position: pickup, time, path },
+      ];
+      const visited2: Record<Position, boolean> = {};
+
+      while (queue2.length > 0) {
+        queue2.sort((a, b) => a.time - b.time);
+        const { position, time, path } = queue2.shift()!;
+
+        if (position === destination) {
+          return { positions: path, time };
+        } else if (!visited2[position]) {
+          visited2[position] = true;
+          const newQueue = Object.keys(timeMatrix[position]).map((nextPos) => ({
+            position: nextPos,
+            time: time + timeMatrix[position][nextPos],
+            path: [...path, position],
+          }));
+          queue2.push(...newQueue);
+        }
+      }
+
+      break;
+    } else if (!visited1[position]) {
+      visited1[position] = true;
       const newQueue = Object.keys(timeMatrix[position]).map((nextPos) => ({
         position: nextPos,
         time: time + timeMatrix[position][nextPos],
         path: [...path, position],
       }));
-      queue.push(...newQueue);
+      queue1.push(...newQueue);
     }
   }
 
-  console.log('queue', queue.toString());
-
-  if (origin === destination) {
-    return { positions: [destination], time: 0 };
-  }
-
-  throw new Error('Unable to find a path');
+  throw new Error('Unable to find a path from origin to destination via pickup');
 }
+
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { droneOrigin, objectPickup, deliveryDestination } = req.body;
