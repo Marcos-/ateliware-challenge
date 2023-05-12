@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Form from '../components/form'
-import ChessBoard from '../components/chessboard'
+import Chessboard from '../components/chessboard'
 
 export default function Home() {
   return (
@@ -34,7 +34,7 @@ export default function Home() {
       </div>
 
       <div className="relative flex place-items-center m-16 mb-16">
-        <ChessBoard></ChessBoard>
+        <Chessboard></Chessboard>
       </div>
 
     </main>
