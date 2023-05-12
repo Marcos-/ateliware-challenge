@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Form from '../components/form'
-import Chessboard from '../components/chessboard'
+import Chessboard from '../components/chessboard.js'
 
 export default function Home() {
   return (
